@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MovieDatabase.Infrastructure.Middlewares;
 
 namespace MovieDatabase.Infrastructure;
@@ -20,7 +21,7 @@ public static class Extensions
         return services;
     }
     
-    public static WebApplication UseInfrastructure(this WebApplication app)
+    public static async Task<WebApplication> UseInfrastructureAsync(this WebApplication app)
     {
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
@@ -28,6 +29,7 @@ public static class Extensions
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        await app.ApplyMigrationsAsync();
         
         return app;
     }
@@ -39,5 +41,12 @@ public static class Extensions
         {
             opt.UseSqlServer(configuration.GetConnectionString(connectionStringName));
         });
+    }
+
+    private static async Task ApplyMigrationsAsync(this IHost app)
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<MovieDbContext>();
+        await db.Database.MigrateAsync();
     }
 }

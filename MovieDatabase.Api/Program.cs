@@ -9,5 +9,5 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseInfrastructure();
+await app.UseInfrastructureAsync();
 app.Run();
