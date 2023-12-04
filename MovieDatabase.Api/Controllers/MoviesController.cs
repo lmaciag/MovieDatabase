@@ -4,6 +4,7 @@ using MovieDatabase.Application.Commands;
 using MovieDatabase.Application.Dtos;
 using MovieDatabase.Application.Params;
 using MovieDatabase.Application.Queries;
+using MovieDatabase.Core.Enums;
 
 namespace MovieDatabase.Api.Controllers;
 
@@ -19,9 +20,9 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MovieItemDto>>> GetMovies()
+    public async Task<ActionResult<IEnumerable<MovieItemDto>>> GetMovies([FromQuery] MovieGenreEnum? genre, [FromQuery] Guid? directorId)
     {
-        var movies = await _mediator.Send(new GetMoviesQuery());
+        var movies = await _mediator.Send(new GetMoviesQuery(genre, directorId));
         return Ok(movies);
     }
 
