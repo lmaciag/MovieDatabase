@@ -1,12 +1,13 @@
 using MovieDatabase.Core.Exceptions;
+using MovieDatabase.Core.ValueObjects;
 
 namespace MovieDatabase.Application.Exceptions;
 
 public sealed class MovieNotFoundException : BaseException
 {
-    public Guid MovieId { get; private set; }
+    public MovieId MovieId { get; private set; }
     
-    public MovieNotFoundException(Guid movieId) : base($"Movie with given id: '{movieId}' was not found.")
+    public MovieNotFoundException(MovieId movieId) : base($"Movie with given id: '{movieId}' was not found.")
     {
         MovieId = movieId;
     }
