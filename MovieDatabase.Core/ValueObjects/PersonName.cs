@@ -4,16 +4,17 @@ namespace MovieDatabase.Core.ValueObjects;
 
 public sealed record PersonName
 {
-    public string FirstName { get; }
-    
-    public string LastName { get; }
+    public string Value { get; }
 
-    public PersonName(string firstName, string lastName)
+    public PersonName(string value)
     {
-        if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+        if (string.IsNullOrWhiteSpace(value))
             throw new InvalidPersonNameException();
 
-        FirstName = firstName;
-        LastName = lastName;
+        Value = value;
     }
+
+    public static implicit operator string(PersonName personName) => personName.Value;
+
+    public static implicit operator PersonName(string value) => new(value);
 }

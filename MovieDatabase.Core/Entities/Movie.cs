@@ -21,19 +21,24 @@ public sealed class Movie
     
     public ICollection<MovieActor> Actors { get; private set; }
     
-    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }   
 
-    public Movie(MovieTitle title, MovieGenre genre, MovieDirector director, MovieReleaseDate releaseDate, MovieBoxOffice boxOffice, MovieLength length, ICollection<MovieActor> actors)
+    public Movie(MovieTitle title, MovieGenre genre, MovieDirector director, MovieReleaseDate releaseDate, MovieBoxOffice boxOffice, MovieLength length, ICollection<MovieActor> actors) : base()
     {
         Id = Guid.NewGuid();
         Title = title;
         Genre = genre;
-        Director = director;
+        Director = director ?? throw new EmptyMovieDirectorException();
         ReleaseDate = releaseDate;
         BoxOffice = boxOffice;
         Length = length;
         Actors = actors;
         CreatedAt = DateTimeOffset.UtcNow;
+    }
+
+    private Movie()
+    {
+        Actors = new List<MovieActor>();
     }
 
     public void UpdateTitle(MovieTitle title)
@@ -48,10 +53,7 @@ public sealed class Movie
 
     public void UpdateDirector(MovieDirector director)
     {
-        if (director is null)
-            throw new EmptyMovieDirectorException();
-
-        Director = director;
+        Director = director ?? throw new EmptyMovieDirectorException();
     }
     
     public void UpdateReleaseDate(MovieReleaseDate releaseDate)

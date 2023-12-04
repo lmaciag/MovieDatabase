@@ -6,11 +6,14 @@ public abstract class Person
 {
     public PersonId Id { get; protected set; }
     
-    public PersonName Name { get; protected set; }
+    public PersonName FirstName { get; protected set; }
+    
+    public PersonName LastName { get; protected set; }
 
-    protected Person(PersonId id, PersonName name)
+    protected Person(PersonId id, PersonName firstName, PersonName lastName)
     {
         Id = id;
-        Name = name;
+        FirstName = firstName;
+        LastName = lastName;
     }
 }
