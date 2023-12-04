@@ -58,7 +58,7 @@ public class MoviesController : ControllerBase
     public async Task<ActionResult<MovieDto>> CreateMovie(CreateMovieCommand command)
     {
         var movie = await _mediator.Send(command);
-        return CreatedAtRoute(nameof(GetMovie), new { id = movie.Id }, movie);
+        return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, movie);
     }
 
     [HttpPut("{id:guid}")]
