@@ -34,6 +34,7 @@ public sealed class Movie
         Length = length;
         Actors = actors;
         CreatedAt = DateTimeOffset.UtcNow;
+        AssignActors(actors);
     }
 
     private Movie()
@@ -71,8 +72,11 @@ public sealed class Movie
         Length = length;
     }
 
-    public void UpdateActors(ICollection<MovieActor> actors)
+    public void AssignActors(ICollection<MovieActor> actors)
     {
-        throw new NotImplementedException();
+        if (actors.Count < 2)
+            throw new InsufficientMovieActorsException();
+
+        Actors = actors;
     }
 }

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Application.Dtos;
 using MovieDatabase.Application.Exceptions;
 using MovieDatabase.Core.Entities;
@@ -17,12 +18,17 @@ public sealed class CreateMovieCommandHandler : IRequestHandler<CreateMovieComma
 
     public async Task<MovieDto> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
     {
-        var movieDirector = _dbContext.Directors.SingleOrDefault(x => x.Id.Equals(request.DirectorId));
+        var director = await _dbContext.Directors
+            .SingleOrDefaultAsync(x => x.Id.Equals(request.DirectorId), cancellationToken);
 
-        if (movieDirector is null)
+        if (director is null)
             throw new MovieDirectorNotFoundException(request.DirectorId);
+
+        var actors = await _dbContext.Actors
+            .Where(x => request.ActorsIds.Contains(x.Id))
+            .ToListAsync(cancellationToken);
         
-        var movie = new Movie(request.Title, request.Genre, movieDirector, request.ReleaseDate, request.BoxOffice, request.Length, new List<MovieActor>());
+        var movie = new Movie(request.Title, request.Genre, director, request.ReleaseDate, request.BoxOffice, request.Length, actors);
         
         await _dbContext.Movies.AddAsync(movie, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

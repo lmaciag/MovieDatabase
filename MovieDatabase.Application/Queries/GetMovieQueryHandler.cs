@@ -19,6 +19,7 @@ public sealed class GetMovieQueryHandler : IRequestHandler<GetMovieQuery, MovieD
     {
         var movie = await _dbContext.Movies
             .Include(x => x.Director)
+            .Include(x => x.Actors)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id.Equals(request.Id), cancellationToken);
         

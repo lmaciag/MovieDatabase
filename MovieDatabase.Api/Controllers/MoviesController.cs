@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MovieDatabase.Application.Commands;
 using MovieDatabase.Application.Dtos;
+using MovieDatabase.Application.Params;
 using MovieDatabase.Application.Queries;
 
 namespace MovieDatabase.Api.Controllers;
@@ -56,7 +57,15 @@ public class MoviesController : ControllerBase
     public async Task<ActionResult<MovieDto>> CreateMovie(CreateMovieCommand command)
     {
         var movie = await _mediator.Send(command);
-        return Ok(movie);
+        return CreatedAtRoute(nameof(GetMovie), new { id = movie.Id }, movie);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult> UpdateMovie(Guid id, UpdateMovieParams updateParams)
+    {
+        await _mediator.Send(new UpdateMovieCommand(id, updateParams));
+
+        return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
