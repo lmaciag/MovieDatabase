@@ -28,23 +28,23 @@ public static class MovieTestHelpers
         return movieRepositoryMock;
     }
 
-    public static Mock<IMovieActorRepository> PrepareMovieActorRepository()
+    public static Mock<IActorRepository> PrepareActorRepository()
     {
-        var movieActorRepositoryMock = new Mock<IMovieActorRepository>();
+        var actorRepositoryMock = new Mock<IActorRepository>();
         
-        movieActorRepositoryMock.Setup(x => x.GetAsync(CancellationToken.None, It.IsAny<ICollection<Guid>?>()))
+        actorRepositoryMock.Setup(x => x.GetAsync(CancellationToken.None, It.IsAny<ICollection<Guid>?>()))
             .ReturnsAsync(new List<MovieActor> { new (_movieFirstActorId, "Leo", "DiCaprio"), new (_movieSecondActorId, "Kate", "Winslet")});
 
-        return movieActorRepositoryMock;
+        return actorRepositoryMock;
     }
 
-    public static Mock<IMovieDirectorRepository> PrepareMovieDirectorRepository()
+    public static Mock<IDirectorRepository> PrepareDirectorRepository()
     {
-        var movieDirectorRepositoryMock = new Mock<IMovieDirectorRepository>();
+        var directorRepositoryMock = new Mock<IDirectorRepository>();
         
-        movieDirectorRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), CancellationToken.None))
+        directorRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), CancellationToken.None))
             .ReturnsAsync(new MovieDirector(_movieDirectorId, "James", "Cameron"));
 
-        return movieDirectorRepositoryMock;
+        return directorRepositoryMock;
     }
 }

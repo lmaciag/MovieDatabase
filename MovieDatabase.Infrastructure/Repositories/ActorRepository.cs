@@ -4,11 +4,11 @@ using MovieDatabase.Core.Repositories;
 
 namespace MovieDatabase.Infrastructure.Repositories;
 
-public class MovieActorRepository : IMovieActorRepository
+public class ActorRepository : IActorRepository
 {
     private readonly MovieDbContext _dbContext;
 
-    public MovieActorRepository(MovieDbContext dbContext)
+    public ActorRepository(MovieDbContext dbContext)
     {
         _dbContext = dbContext;
     }

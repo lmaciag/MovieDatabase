@@ -9,18 +9,18 @@ namespace MovieDatabase.Application.Tests.Queries;
 [TestFixture]
 public class GetActorsQueryHandlerTests
 {
-    private readonly Mock<IMovieActorRepository> _movieActorRepository;
+    private readonly Mock<IActorRepository> _actorRepository;
 
     public GetActorsQueryHandlerTests()
     {
-        _movieActorRepository = MovieTestHelpers.PrepareMovieActorRepository();
+        _actorRepository = MovieTestHelpers.PrepareActorRepository();
     }
 
     [Test]
     public async Task GetActorsQueryHandlerShouldReturnCorrectCount()
     {
         var actorsQuery = new GetActorsQuery();
-        var handler = new GetActorsQueryHandler(_movieActorRepository.Object);
+        var handler = new GetActorsQueryHandler(_actorRepository.Object);
 
         var result = await handler.Handle(actorsQuery, CancellationToken.None);
         

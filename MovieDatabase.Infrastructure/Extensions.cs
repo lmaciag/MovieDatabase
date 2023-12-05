@@ -21,8 +21,8 @@ public static class Extensions
         services.AddSwaggerGen();
         
         services.AddScoped<IMovieRepository, MovieRepository>();
-        services.AddScoped<IMovieActorRepository, MovieActorRepository>();
-        services.AddScoped<IMovieDirectorRepository, MovieDirectorRepository>();
+        services.AddScoped<IActorRepository, ActorRepository>();
+        services.AddScoped<IDirectorRepository, DirectorRepository>();
 
         return services;
     }

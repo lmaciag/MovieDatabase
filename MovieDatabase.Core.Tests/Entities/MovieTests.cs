@@ -47,7 +47,7 @@ public class MovieTests
     [Test]
     public void EmptyDirectorShouldThrowEmptyMovieDirectorException()
     {
-        Should.Throw<EmptyMovieDirectorException>(() => new Movie(_title, _genre, null, _releaseDate, _boxOffice, _length, new List<MovieActor> {_firstActor, _secondActor}));
+        Should.Throw<EmptyMovieDirectorException>(() => new Movie(_title, _genre, null!, _releaseDate, _boxOffice, _length, new List<MovieActor> {_firstActor, _secondActor}));
     }
 
     [Test]
@@ -71,7 +71,7 @@ public class MovieTests
     [Test]
     public void EmptyActorsShouldThrowInsufficientMovieActorsException()
     {
-        Should.Throw<InsufficientMovieActorsException>(() => new Movie(_title, _genre, _director, _releaseDate, _boxOffice, _length, null));
+        Should.Throw<InsufficientMovieActorsException>(() => new Movie(_title, _genre, _director, _releaseDate, _boxOffice, _length, null!));
     }
 
     [Test]
