@@ -14,8 +14,8 @@ public static class MovieTestHelpers
     private static DateOnly _movieReleaseDate = new (1997, 12, 19);
     private static decimal _movieBoxOffice = 350000000.00m;
     private static int _movieLength = 195;
-    private static Guid _movieFirstActorId = Guid.Parse("cd2df99f-a807-4b04-882d-8dae0efe11d3");
-    private static Guid _movieSecondActorId = Guid.Parse("cd2df99f-a807-4b04-882d-8dae0efe11d3");
+    private static Guid _movieFirstActorId = Guid.Parse("43342e12-0ad1-4b14-aab9-d52abb915708");
+    private static Guid _movieSecondActorId = Guid.Parse("cfc4d97c-0911-4845-94b2-57569dad246c");
 
     public static CreateMovieCommand PrepareCreateMovieCommand()
     {
