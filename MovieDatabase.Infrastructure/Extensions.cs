@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieDatabase.Core.Repositories;
 using MovieDatabase.Infrastructure.Middlewares;
+using MovieDatabase.Infrastructure.Repositories;
 
 namespace MovieDatabase.Infrastructure;
 
@@ -17,6 +19,10 @@ public static class Extensions
         services.AddDatabaseContext(configuration);
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        
+        services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IMovieActorRepository, MovieActorRepository>();
+        services.AddScoped<IMovieDirectorRepository, MovieDirectorRepository>();
 
         return services;
     }

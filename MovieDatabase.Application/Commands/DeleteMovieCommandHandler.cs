@@ -1,28 +1,25 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Application.Exceptions;
-using MovieDatabase.Infrastructure;
+using MovieDatabase.Core.Repositories;
 
 namespace MovieDatabase.Application.Commands;
 
 public sealed class DeleteMovieCommandHandler : IRequestHandler<DeleteMovieCommand>
 {
-    private readonly MovieDbContext _dbContext;
+    private readonly IMovieRepository _movieRepository;
 
-    public DeleteMovieCommandHandler(MovieDbContext dbContext)
+    public DeleteMovieCommandHandler(IMovieRepository movieRepository)
     {
-        _dbContext = dbContext;
+        _movieRepository = movieRepository;
     }
     
     public async Task Handle(DeleteMovieCommand request, CancellationToken cancellationToken)
     {
-        var movie = await _dbContext.Movies
-            .SingleOrDefaultAsync(x => x.Id.Equals(request.Id), cancellationToken);
+        var movie = await _movieRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (movie is null)
             throw new MovieNotFoundException(request.Id);
 
-        _dbContext.Movies.Remove(movie);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _movieRepository.RemoveAsync(movie, cancellationToken);
     }
 }

@@ -1,24 +1,22 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Application.Dtos;
-using MovieDatabase.Infrastructure;
+using MovieDatabase.Core.Repositories;
 
 namespace MovieDatabase.Application.Queries;
 
 public sealed class GetMovieActorsQueryHandler : IRequestHandler<GetMovieActorsQuery, IEnumerable<MoviePersonDto>>
 {
-    private readonly MovieDbContext _dbContext;
+    private readonly IMovieActorRepository _movieActorRepository;
 
-    public GetMovieActorsQueryHandler(MovieDbContext dbContext)
+    public GetMovieActorsQueryHandler(IMovieActorRepository movieActorRepository)
     {
-        _dbContext = dbContext;
+        _movieActorRepository = movieActorRepository;
     }
 
     public async Task<IEnumerable<MoviePersonDto>> Handle(GetMovieActorsQuery request, CancellationToken cancellationToken)
     {
-        return await _dbContext.Actors
-            .Select(x => new MoviePersonDto(x.Id, x.FirstName, x.LastName))
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var actors = await _movieActorRepository.GetAsync(cancellationToken);
+
+        return actors.Select(x => new MoviePersonDto(x.Id, x.FirstName, x.LastName));
     }
 }

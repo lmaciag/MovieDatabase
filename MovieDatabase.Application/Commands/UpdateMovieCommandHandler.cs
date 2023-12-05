@@ -1,38 +1,35 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Application.Exceptions;
-using MovieDatabase.Infrastructure;
+using MovieDatabase.Core.Repositories;
 
 namespace MovieDatabase.Application.Commands;
 
 public sealed class UpdateMovieCommandHandler : IRequestHandler<UpdateMovieCommand>
 {
-    private readonly MovieDbContext _dbContext;
+    private readonly IMovieRepository _movieRepository;
+    private readonly IMovieActorRepository _movieActorRepository;
+    private readonly IMovieDirectorRepository _movieDirectorRepository;
 
-    public UpdateMovieCommandHandler(MovieDbContext dbContext)
+    public UpdateMovieCommandHandler(IMovieRepository movieRepository, IMovieActorRepository movieActorRepository, IMovieDirectorRepository movieDirectorRepository)
     {
-        _dbContext = dbContext;
+        _movieRepository = movieRepository;
+        _movieActorRepository = movieActorRepository;
+        _movieDirectorRepository = movieDirectorRepository;
     }
 
     public async Task Handle(UpdateMovieCommand request, CancellationToken cancellationToken)
     {
-        var movie = await _dbContext.Movies
-            .Include(x => x.Director)
-            .Include(x => x.Actors)
-            .SingleOrDefaultAsync(x => x.Id.Equals(request.Id), cancellationToken);
+        var movie = await _movieRepository.GetByIdAsync(request.Id, cancellationToken);
         
         if (movie is null)
             throw new MovieNotFoundException(request.Id);
         
-        var director = await _dbContext.Directors
-            .SingleOrDefaultAsync(x => x.Id.Equals(request.UpdateParams.DirectorId), cancellationToken);
+        var director = await _movieDirectorRepository.GetByIdAsync(request.UpdateParams.DirectorId, cancellationToken);
 
         if (director is null)
             throw new MovieDirectorNotFoundException(request.UpdateParams.DirectorId);
 
-        var actors = await _dbContext.Actors
-            .Where(x => request.UpdateParams.ActorsIds.Contains(x.Id))
-            .ToListAsync(cancellationToken);
+        var actors = await _movieActorRepository.GetAsync(cancellationToken, request.UpdateParams.ActorsIds);
         
         movie.UpdateTitle(request.UpdateParams.Title);
         movie.UpdateGenre(request.UpdateParams.Genre);
@@ -41,7 +38,7 @@ public sealed class UpdateMovieCommandHandler : IRequestHandler<UpdateMovieComma
         movie.UpdateBoxOffice(request.UpdateParams.BoxOffice);
         movie.UpdateLength(request.UpdateParams.Length);
         movie.AssignActors(actors);
-        
-        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _movieRepository.UpdateAsync(movie, cancellationToken);
     }
 }

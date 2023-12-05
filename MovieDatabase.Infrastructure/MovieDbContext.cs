@@ -3,7 +3,7 @@ using MovieDatabase.Core.Entities;
 
 namespace MovieDatabase.Infrastructure;
 
-public sealed class MovieDbContext : DbContext
+public class MovieDbContext : DbContext
 {
     public DbSet<Movie> Movies { get; set; }
     
