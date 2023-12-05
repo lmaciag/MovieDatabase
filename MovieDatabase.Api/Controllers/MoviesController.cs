@@ -39,20 +39,6 @@ public class MoviesController : ControllerBase
         var genres = await _mediator.Send(new GetMovieGenresQuery());
         return Ok(genres);
     }
-    
-    [HttpGet("Actors")]
-    public async Task<ActionResult<IEnumerable<MoviePersonDto>>> GetMovieActors()
-    {
-        var actors = await _mediator.Send(new GetMovieActorsQuery());
-        return Ok(actors);
-    }
-    
-    [HttpGet("Directors")]
-    public async Task<ActionResult<IEnumerable<MoviePersonDto>>> GetMovieDirectors()
-    {
-        var directors = await _mediator.Send(new GetMovieDirectorsQuery());
-        return Ok(directors);
-    }
 
     [HttpPost]
     public async Task<ActionResult<MovieDto>> CreateMovie(CreateMovieCommand command)

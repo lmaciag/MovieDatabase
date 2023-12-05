@@ -3,4 +3,4 @@ using MovieDatabase.Application.Dtos;
 
 namespace MovieDatabase.Application.Queries;
 
-public sealed record GetMovieActorsQuery : IRequest<IEnumerable<MoviePersonDto>>;
+public sealed record GetDirectorsQuery : IRequest<IEnumerable<MoviePersonDto>>;

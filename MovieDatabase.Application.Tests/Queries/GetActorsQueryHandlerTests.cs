@@ -7,20 +7,20 @@ using Shouldly;
 namespace MovieDatabase.Application.Tests.Queries;
 
 [TestFixture]
-public class GetMovieActorsQueryHandlerTests
+public class GetActorsQueryHandlerTests
 {
     private readonly Mock<IMovieActorRepository> _movieActorRepository;
 
-    public GetMovieActorsQueryHandlerTests()
+    public GetActorsQueryHandlerTests()
     {
         _movieActorRepository = MovieTestHelpers.PrepareMovieActorRepository();
     }
 
     [Test]
-    public async Task GetMovieActorsQueryHandlerShouldReturnCorrectCount()
+    public async Task GetActorsQueryHandlerShouldReturnCorrectCount()
     {
-        var actorsQuery = new GetMovieActorsQuery();
-        var handler = new GetMovieActorsQueryHandler(_movieActorRepository.Object);
+        var actorsQuery = new GetActorsQuery();
+        var handler = new GetActorsQueryHandler(_movieActorRepository.Object);
 
         var result = await handler.Handle(actorsQuery, CancellationToken.None);
         

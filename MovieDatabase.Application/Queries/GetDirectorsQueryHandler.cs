@@ -4,16 +4,16 @@ using MovieDatabase.Core.Repositories;
 
 namespace MovieDatabase.Application.Queries;
 
-public sealed class GetMovieDirectorsQueryHandler : IRequestHandler<GetMovieDirectorsQuery, IEnumerable<MoviePersonDto>>
+public sealed class GetDirectorsQueryHandler : IRequestHandler<GetDirectorsQuery, IEnumerable<MoviePersonDto>>
 {
     private readonly IMovieDirectorRepository _movieDirectorRepository;
 
-    public GetMovieDirectorsQueryHandler(IMovieDirectorRepository movieDirectorRepository)
+    public GetDirectorsQueryHandler(IMovieDirectorRepository movieDirectorRepository)
     {
         _movieDirectorRepository = movieDirectorRepository;
     }
 
-    public async Task<IEnumerable<MoviePersonDto>> Handle(GetMovieDirectorsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<MoviePersonDto>> Handle(GetDirectorsQuery request, CancellationToken cancellationToken)
     {
         var directors = await _movieDirectorRepository.GetAsync(cancellationToken);
 
