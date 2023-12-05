@@ -74,7 +74,7 @@ public sealed class Movie
 
     public void AssignActors(ICollection<MovieActor> actors)
     {
-        if (actors.Count < 2)
+        if (actors == null || actors.Count < 2)
             throw new InsufficientMovieActorsException();
 
         Actors = actors;
